@@ -5,6 +5,9 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import jakarta.annotation.PostConstruct;
+import jakarta.persistence.LockModeType;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pro.sky.botapitelegram.model.NotificationTask;
 import pro.sky.botapitelegram.repository.NotificationRepository;
@@ -15,13 +18,12 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import static org.hibernate.internal.CoreLogging.logger;
 
 public final class TelegramBotUpdatesListener implements UpdatesListener {
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
     private static final DateTimeFormatter DATE_TIME_PATTERN=DateTimeFormatter.ofPattern("d.M.yyyy HH:mm");
     private static final Pattern PATTERN= Pattern.compile("([0-9\\.\\:\\s]{16})(\\s)([\\W+]+)");
     private final TelegramBot bot;
@@ -30,6 +32,11 @@ public final class TelegramBotUpdatesListener implements UpdatesListener {
     public TelegramBotUpdatesListener(TelegramBot bot, NotificationRepository repository) {
         this.bot = bot;
         this.repository=repository;
+    }
+
+    @PostConstruct
+    public void init() {
+        bot.setUpdatesListener(this);
     }
 
     @Override

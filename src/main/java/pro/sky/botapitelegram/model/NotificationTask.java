@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="notification-task")
+@Table(name="notification_task")
 public class NotificationTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,11 +13,10 @@ public class NotificationTask {
     private String text;
     @Column(name = "chat_id")
     private long chatId;
-    @Column(name = "date_tome")
-    private LockModeType dateTime;
+    @Column(name = "date_time")
+    private LocalDateTime dateTime;
 
-    public NotificationTask() {
-    }
+
 
     public long getId() {
         return id;
@@ -43,7 +42,7 @@ public class NotificationTask {
         this.chatId = chatId;
     }
 
-    public LockModeType getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
